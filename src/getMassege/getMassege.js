@@ -1,0 +1,43 @@
+import React, { useEffect, useState } from "react";
+import "./getMassege.css";
+import { useParams } from "react-router-dom";
+
+export default function GetMessage() {
+  const { uuid } = useParams();
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMessage = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/users/message-receive/${uuid}`
+        );
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setMessage(data.message || "No message found.");
+        } else {
+          setError(data.message || "Failed to retrieve message.");
+        }
+      } catch (err) {
+        setError("Network error: " + err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMessage();
+  }, []);
+
+  return (
+    <div className="message-container">
+      <div>
+        <h2>Secret Message:  <span>{message}</span></h2>
+       
+      </div>
+    </div>
+  );
+}
