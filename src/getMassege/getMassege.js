@@ -5,8 +5,6 @@ import { useParams } from "react-router-dom";
 export default function GetMessage() {
   const { uuid } = useParams();
   const [message, setMessage] = useState("");
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchMessage = async () => {
