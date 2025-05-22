@@ -9,41 +9,50 @@ export default function SpyMessenger() {
   const [oneTimeView, setOneTimeView] = useState(true);
   const [generatedLink, setGeneratedLink] = useState("");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleGenerateLink = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/users/send-message`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            message,
-            expiresInMinutes: expireMinutes,
-            oneTimeView,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (response.ok) {
-        Swal.fire("Link generated!", data.link || "View your secret message.");
-        setGeneratedLink(data.link);
-      } else {
-        Swal.fire("Error:", data.message || JSON.stringify(data));
+  e.preventDefault();
+  setLoading(true);
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/users/send-message`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message,
+          expiresInMinutes: expireMinutes,
+          oneTimeView,
+        }),
       }
-    } catch (error) {
-      console.error("Network error:", error);
-      Swal.fire("Network error", error.message);
-    }
-  };
+    );
 
-   const handleOpenMessage = (e) => {
-       navigate(`/:uuid`);
+    const data = await response.json();
+
+    if (response.ok) {
+      setGeneratedLink(data.link);
+      navigator.clipboard.writeText(data.link);
+      Swal.fire({
+        title: "🔐 Link Generated!",
+        text: "The link has been copied to clipboard.",
+        icon: "success",
+        confirmButtonColor: "#ff5c7a",
+      });
+    } else {
+      Swal.fire("Error", data.message || JSON.stringify(data), "error");
+    }
+  } catch (error) {
+    Swal.fire("Network Error", error.message, "error");
+  } finally {
+    setLoading(false);
+  }
+};
+
+  const handleOpenMessage = (e) => {
+    navigate(`/:uuid`);
   };
 
   return (
