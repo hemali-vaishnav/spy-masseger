@@ -16,14 +16,10 @@ export default function GetMessage() {
         const data = await response.json();
 
         if (response.ok) {
-          setMessage(data.message || "No message found.");
-        } else {
-          setError(data.message || "Failed to retrieve message.");
+          console.log(data.message || "No message found.");
         }
       } catch (err) {
-        setError("Network error: " + err.message);
-      } finally {
-        setLoading(false);
+        console.log("Failed to retrieve message.");
       }
     };
 
@@ -33,8 +29,9 @@ export default function GetMessage() {
   return (
     <div className="message-container">
       <div>
-        <h2>Secret Message:  <span>{message}</span></h2>
-       
+        <h2>
+          Secret Message: <span>{message}</span>
+        </h2>
       </div>
     </div>
   );
