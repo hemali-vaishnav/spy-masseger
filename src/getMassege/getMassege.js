@@ -16,11 +16,12 @@ export default function GetMessage() {
         const data = await response.json();
 
         if (response.ok) {
-          console.log(data.message || "No message found.");
-        }
+          setMessage(data.message || "No message found.");
+        } 
       } catch (err) {
         console.log("Failed to retrieve message.");
-      }
+        
+      } 
     };
 
     fetchMessage();
