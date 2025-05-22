@@ -24,7 +24,7 @@ export default function GetMessage() {
     };
 
     fetchMessage();
-  }, []);
+  }, [uuid]);
 
   return (
     <div className="message-container">
