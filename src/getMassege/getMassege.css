@@ -1,0 +1,94 @@
+.container {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  background: #ffe0e6;
+  border: 2px solid #ff8aa2;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 50px auto;
+  user-select: none;
+}
+ 
+.heart-button {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  padding: 12px 20px;
+  cursor: pointer;
+  z-index: 10;
+  background: #ff8aa2;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  box-shadow: 0 4px 8px rgba(255, 138, 162, 0.6);
+  transition: background-color 0.3s ease;
+}
+ 
+.heart-button:hover {
+  background-color: #ff5c7a;
+}
+ 
+.hearts-container {
+  position: absolute;
+  bottom: 60px; /* place hearts start point just above button */
+  left: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 5;
+}
+ 
+/* Each heart starts at (0,0) relative to hearts-container, and animates to random translateX/Y */
+.heart {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 1;
+  animation-name: flyAway;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+  will-change: transform, opacity;
+}
+ 
+@keyframes flyAway {
+  to {
+    transform: translate(var(--translateX), var(--translateY));
+    opacity: 0;
+    scale: 0.8;
+  }
+}
+
+.message-box {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff0f5;
+  color: #ff3366;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 20px 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(255, 105, 135, 0.3);
+  text-align: center;
+  max-width: 80%;
+  animation: fadeInPop 0.8s ease forwards;
+  z-index: 15;
+}
+
+
+/* Fade-in with pop effect */
+@keyframes fadeInPop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
